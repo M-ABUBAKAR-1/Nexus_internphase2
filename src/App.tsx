@@ -23,11 +23,13 @@ import { InvestorsPage } from './pages/investors/InvestorsPage';
 import { EntrepreneursPage } from './pages/entrepreneurs/EntrepreneursPage';
 import { MessagesPage } from './pages/messages/MessagesPage';
 import { NotificationsPage } from './pages/notifications/NotificationsPage';
-import { DocumentsPage } from './pages/documents/DocumentsPage';
+import { DocumentsPage as DocumentsListPage } from './pages/documents/DocumentsPage';
+import { DocumentPage } from './pages/documents/DocumentPage';
 import { SettingsPage } from './pages/settings/SettingsPage';
 import { HelpPage } from './pages/help/HelpPage';
 import { DealsPage } from './pages/deals/DealsPage';
 import { CalendarPage } from './pages/calendar/CalendarPage';
+import { VideoCallPage } from './pages/video/VideoCallPage';
 
 // Chat Pages
 import { ChatPage } from './pages/chat/ChatPage';
@@ -72,9 +74,13 @@ function App() {
           </Route>
           
           <Route path="/documents" element={<DashboardLayout />}>
-            <Route index element={<DocumentsPage />} />
+            <Route index element={<DocumentPage />} />
           </Route>
 
+          <Route path="/video-call" element={<DashboardLayout />}>
+            <Route index element={<VideoCallPage />} />
+          </Route>
+          
           <Route path="/calendar" element={<DashboardLayout />}>
             <Route index element={<CalendarPage />} />
           </Route>
