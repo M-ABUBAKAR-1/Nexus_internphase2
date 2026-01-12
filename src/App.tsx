@@ -103,10 +103,10 @@ function App() {
           {/* Catch all other routes and redirect to login */}
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
-      </Router>
-      </MeetingsProvider>
-    </AuthProvider>
-  );
-}
+        </Router>
+        </MeetingsProvider>
+      </AuthProvider>
+    );
+  }
 
 export default App;
