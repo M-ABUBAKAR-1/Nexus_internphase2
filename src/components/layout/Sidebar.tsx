@@ -5,7 +5,7 @@ import {
   Home, Building2, CircleDollarSign, Users, MessageCircle, 
   Bell, FileText, Settings, HelpCircle
 } from 'lucide-react';
-import { Calendar as CalendarIcon, Video } from 'lucide-react';
+import { Calendar as CalendarIcon, Video, CreditCard, Shield } from 'lucide-react';
 
 interface SidebarItemProps {
   to: string;
@@ -64,6 +64,8 @@ export const Sidebar: React.FC = () => {
   
   // Common items at the bottom
   const commonItems = [
+    { to: '/payments', icon: <CreditCard size={20} />, text: 'Payments' },
+    { to: '/security', icon: <Shield size={20} />, text: 'Security' },
     { to: '/settings', icon: <Settings size={20} />, text: 'Settings' },
     { to: '/help', icon: <HelpCircle size={20} />, text: 'Help & Support' },
   ];
