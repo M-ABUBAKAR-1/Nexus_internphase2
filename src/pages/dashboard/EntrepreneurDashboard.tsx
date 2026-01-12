@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Bell, Calendar, TrendingUp, AlertCircle, PlusCircle } from 'lucide-react';
+import { Users, Bell, Calendar, TrendingUp, AlertCircle, PlusCircle, Clock } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card, CardBody, CardHeader } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
 import { CollaborationRequestCard } from '../../components/collaboration/CollaborationRequestCard';
 import { InvestorCard } from '../../components/investor/InvestorCard';
 import { useAuth } from '../../context/AuthContext';
+import { useMeetings } from '../../context/MeetingsContext';
 import { CollaborationRequest } from '../../types';
 import { getRequestsForEntrepreneur } from '../../data/collaborationRequests';
 import { investors } from '../../data/users';
 
 export const EntrepreneurDashboard: React.FC = () => {
   const { user } = useAuth();
+  const { confirmedMeetings, meetingRequests } = useMeetings();
   const [collaborationRequests, setCollaborationRequests] = useState<CollaborationRequest[]>([]);
   const [recommendedInvestors, setRecommendedInvestors] = useState(investors.slice(0, 3));
   
@@ -35,6 +37,7 @@ export const EntrepreneurDashboard: React.FC = () => {
   if (!user) return null;
   
   const pendingRequests = collaborationRequests.filter(req => req.status === 'pending');
+  const pendingMeetingRequests = meetingRequests.filter(r => r.status === 'pending');
   
   return (
     <div className="space-y-6 animate-fade-in">
@@ -93,7 +96,7 @@ export const EntrepreneurDashboard: React.FC = () => {
               </div>
               <div>
                 <p className="text-sm font-medium text-accent-700">Upcoming Meetings</p>
-                <h3 className="text-xl font-semibold text-accent-900">2</h3>
+                <h3 className="text-xl font-semibold text-accent-900">{confirmedMeetings.length}</h3>
               </div>
             </div>
           </CardBody>
@@ -142,6 +145,31 @@ export const EntrepreneurDashboard: React.FC = () => {
                   <p className="text-gray-600">No collaboration requests yet</p>
                   <p className="text-sm text-gray-500 mt-1">When investors are interested in your startup, their requests will appear here</p>
                 </div>
+              )}
+            </CardBody>
+          </Card>
+
+          {/* Confirmed Meetings */}
+          <Card>
+            <CardHeader>
+              <h2 className="text-lg font-medium text-gray-900">Upcoming Meetings</h2>
+            </CardHeader>
+            <CardBody>
+              {confirmedMeetings.length > 0 ? (
+                <div className="space-y-3">
+                  {confirmedMeetings.map(meeting => (
+                    <div key={meeting.id} className="flex items-start gap-3 p-3 border border-gray-200 rounded-md">
+                      <Clock className="text-success-600 mt-0.5" size={18} />
+                      <div className="flex-1">
+                        <p className="font-medium text-gray-900">{meeting.title}</p>
+                        <p className="text-sm text-gray-600">{new Date(meeting.start).toLocaleString()}</p>
+                        <p className="text-xs text-gray-500 mt-1">With: {meeting.participants.join(', ')}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-500 text-center py-4">No confirmed meetings yet. <Link to="/calendar" className="text-primary-600 hover:underline">Manage your calendar</Link></p>
               )}
             </CardBody>
           </Card>

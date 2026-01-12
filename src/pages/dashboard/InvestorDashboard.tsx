@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, PieChart, Filter, Search, PlusCircle } from 'lucide-react';
+import { Users, PieChart, Filter, Search, PlusCircle, Clock } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card, CardBody, CardHeader } from '../../components/ui/Card';
 import { Input } from '../../components/ui/Input';
 import { Badge } from '../../components/ui/Badge';
 import { EntrepreneurCard } from '../../components/entrepreneur/EntrepreneurCard';
 import { useAuth } from '../../context/AuthContext';
+import { useMeetings } from '../../context/MeetingsContext';
 import { Entrepreneur } from '../../types';
 import { entrepreneurs } from '../../data/users';
 import { getRequestsFromInvestor } from '../../data/collaborationRequests';
 
 export const InvestorDashboard: React.FC = () => {
   const { user } = useAuth();
+  const { confirmedMeetings } = useMeetings();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
   
@@ -146,6 +148,29 @@ export const InvestorDashboard: React.FC = () => {
           </CardBody>
         </Card>
       </div>
+
+      {/* Upcoming Meetings */}
+      {confirmedMeetings.length > 0 && (
+        <Card>
+          <CardHeader>
+            <h2 className="text-lg font-medium text-gray-900">Upcoming Meetings</h2>
+          </CardHeader>
+          <CardBody>
+            <div className="space-y-3">
+              {confirmedMeetings.map(meeting => (
+                <div key={meeting.id} className="flex items-start gap-3 p-3 border border-gray-200 rounded-md">
+                  <Clock className="text-success-600 mt-0.5" size={18} />
+                  <div className="flex-1">
+                    <p className="font-medium text-gray-900">{meeting.title}</p>
+                    <p className="text-sm text-gray-600">{new Date(meeting.start).toLocaleString()}</p>
+                    <p className="text-xs text-gray-500 mt-1">With: {meeting.participants.join(', ')}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardBody>
+        </Card>
+      )}
       
       {/* Entrepreneurs grid */}
       <div>
